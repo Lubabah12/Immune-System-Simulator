@@ -139,7 +139,6 @@ input[type=range]::-webkit-slider-thumb {
     animation: pulse-red 2s infinite;
 }
 
-/* New Accessibility Panel */
 #accessibility-panel {
     position: fixed;
     top: 95px;
@@ -170,6 +169,13 @@ input[type=range]::-webkit-slider-thumb {
     font-size: 13px;
     border: 1px solid rgba(255,255,255,0.1);
 }
+
+#show-settings-btn {
+    position: fixed;
+    top: 95px;
+    left: 24px;
+    z-index: 75;
+}
 </style>
 </head>
 
@@ -186,6 +192,8 @@ input[type=range]::-webkit-slider-thumb {
 
     <aside id="accessibility-panel" class="ui-layer glass-panel rounded-2xl p-4 space-y-4">
         <h2 class="text-sm font-black text-sky-300">إعدادات الوصول</h2>
+
+        <button id="hide-settings-btn" class="access-btn w-full">إخفاء الإعدادات</button>
 
         <div>
             <label class="text-xs text-slate-300 mb-2 block">الخلفية</label>
@@ -219,6 +227,8 @@ input[type=range]::-webkit-slider-thumb {
 
         <button id="reset-accessibility-btn" class="access-btn w-full">إعادة ضبط الإعدادات</button>
     </aside>
+
+    <button id="show-settings-btn" class="control-btn hidden" title="إظهار الإعدادات">⚙️</button>
 
     <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-emerald-600 text-white px-6 py-3 rounded-xl z-[200] opacity-0 transition-opacity duration-300 pointer-events-none font-bold">
         تم نسخ الرابط بنجاح!
@@ -345,6 +355,8 @@ const closeModalBtn = document.getElementById('close-modal-btn');
 const topUI = document.getElementById('top-ui');
 const bottomUI = document.getElementById('bottom-ui');
 const accessPanel = document.getElementById('accessibility-panel');
+const showSettingsBtn = document.getElementById('show-settings-btn');
+const hideSettingsBtn = document.getElementById('hide-settings-btn');
 
 let width, height;
 let entities = {
@@ -1017,16 +1029,24 @@ toggleBtn.onclick = () => {
         topUI.classList.add('hidden-ui-top');
         extraControls.classList.add('hidden-ui-top');
         bottomUI.classList.add('hidden-ui');
-        accessPanel.classList.add('hidden-ui-top');
         toggleBtn.style.opacity = '0.5';
     } else {
         topUI.classList.remove('hidden-ui-top');
         extraControls.classList.remove('hidden-ui-top');
         bottomUI.classList.remove('hidden-ui');
-        accessPanel.classList.remove('hidden-ui-top');
         toggleBtn.style.opacity = '1';
         updateUI();
     }
+};
+
+hideSettingsBtn.onclick = () => {
+    accessPanel.classList.add('hidden-ui-top');
+    showSettingsBtn.classList.remove('hidden');
+};
+
+showSettingsBtn.onclick = () => {
+    accessPanel.classList.remove('hidden-ui-top');
+    showSettingsBtn.classList.add('hidden');
 };
 
 infoBtn.onclick = () => {
